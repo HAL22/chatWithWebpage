@@ -59,9 +59,49 @@ def create_document_from_webpage(url):
     docs = [Document(page_content=t) for t in texts]
 
     return docs
+
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+
 def creat_embeddings(url):
     embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 
     docs = create_document_from_webpage(url)
 
-    return Pinecone.from_documents(docs, embeddings, index_name=st.secrets['PINECONE_NAME']) 
+    index =  Pinecone.from_documents(docs, embeddings, index_name=st.secrets['PINECONE_NAME']) 
+
+   
+
+    return ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), index.as_retriever(), memory=memory)
+
+def get_agent(url):
+    qa = creat_embeddings(url)
+
+    tools = [
+        Tool(
+            name='Knowledge Base',
+            func=qa.run,
+            description=(
+                'use this tool when answering general knowledge queries to get '
+                'more information about the topic'
+            )
+        )
+    ]
+
+    llm = ChatOpenAI(
+        openai_api_key="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",
+        model_name='gpt-3.5-turbo',
+        temperature=0.0
+    )
+
+    agent = initialize_agent(
+        agent='chat-conversational-react-description',
+        tools=tools,
+        llm=llm,
+        verbose=True,
+        max_iterations=3,
+        early_stopping_method='generate',
+        memory=memory
+    )
+
+    return agent
+
