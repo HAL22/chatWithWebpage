@@ -67,6 +67,8 @@ def creat_embeddings(url):
 
     docs = create_document_from_webpage(url)
 
+    delete_index()
+
     pinecone.create_index(st.secrets['PINECONE_NAME'], dimension=1536)
 
     index =  Pinecone.from_documents(docs, embeddings, index_name=st.secrets['PINECONE_NAME']) 
