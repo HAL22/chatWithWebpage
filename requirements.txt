@@ -68,3 +68,4 @@ validators==0.20.0
 yarl==1.9.2
 zipp==3.15.0
 bs4
+pinecone
