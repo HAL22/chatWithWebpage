@@ -70,3 +70,4 @@ zipp==3.15.0
 bs4
 pinecone-client
 streamlit
+streamlit-extras
