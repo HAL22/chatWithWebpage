@@ -14,7 +14,7 @@ response_container = st.container()
 # Text input
 def get_url_user():
     txt_input = st.text_area('Enter url', '', height=80)
-    return txt_input
+    return "https://en.wikipedia.org/wiki/Chelsea_F.C"
 with get_agent_container:
     agent = get_agent(get_url_user())
 
