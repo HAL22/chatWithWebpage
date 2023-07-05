@@ -107,10 +107,11 @@ def get_agent(url):
 
 
 # Text input
+st.set_page_config(page_title="HugChat - An LLM-powered Streamlit app")
+
 txt_input = st.text_area('Enter url', '', height=80)
 
 agent = get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
-st.set_page_config(page_title="HugChat - An LLM-powered Streamlit app")
 
 # Sidebar contents
 with st.sidebar:
