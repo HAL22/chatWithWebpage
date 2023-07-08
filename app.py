@@ -29,7 +29,7 @@ if st.button("Generate agent"):
 
 prompt = st.text_input("Prompt", value="Enter your message here...")
 
-if st.button("Send") and agent_created:
+if st.button("Send"):
     with st.spinner("Generating response..."):
         st.session_state["messages"] += [{"role": "user", "content": prompt}]
         output = agent(prompt)['output']
