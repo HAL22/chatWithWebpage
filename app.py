@@ -7,7 +7,10 @@ def show_messages(text):
     ]
     text.text_area("Messages", value=str("\n".join(messages_str)), height=400)
 
+BASE_PROMPT = [{"role": "system", "content": "You are a helpful assistant."}]
 
+if "messages" not in st.session_state:
+    st.session_state["messages"] = BASE_PROMPT
 st.header("STREAMLIT GPT-3 CHATBOT")
 
 text = st.empty()
