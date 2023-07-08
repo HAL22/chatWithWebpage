@@ -67,16 +67,18 @@ def creat_embeddings(url):
 
     docs = create_document_from_webpage(url)
 
-    delete_index()
+    indexes = pinecone.list_indexes()
+
+    if st.secrets['PINECONE_NAME'] in indexes:
+        index =  Pinecone.from_existing_index(st.secrets['PINECONE_NAME'],embeddings) 
+
+        return ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), index.as_retriever(), memory=memory)
 
     pinecone.create_index(st.secrets['PINECONE_NAME'], dimension=1536)
 
     index =  Pinecone.from_documents(docs, embeddings, index_name=st.secrets['PINECONE_NAME']) 
 
     return ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), index.as_retriever(), memory=memory)
-
-def delete_index():
-    pinecone.delete_index(st.secrets['PINECONE_NAME'])
 
 def get_agent(url):
     qa = creat_embeddings(url)

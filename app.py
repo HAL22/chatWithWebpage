@@ -16,22 +16,12 @@ st.header("STREAMLIT GPT-3 CHATBOT")
 text = st.empty()
 show_messages(text)
 
-web_url = st.text_input("Prompt", value="Enter the url here...")
-
-agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
-
-if st.button("Generate agent"):
-    if web_url != "":
-        with st.spinner("Generating response..."):
-            agent = chat.get_agent(web_url)
-            agent_created = True
-
-
 prompt = st.text_input("Prompt", value="Enter your message here...")
 
 if st.button("Send"):
     with st.spinner("Generating response..."):
         st.session_state["messages"] += [{"role": "user", "content": prompt}]
+        agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
         output = agent(prompt)['output']
         st.session_state["messages"] += [
             {"role": "system", "content": output}
