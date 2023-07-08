@@ -1,29 +1,28 @@
 import streamlit as st
+from streamlit_chat import message
 import chat
 
-def show_messages(text):
-    messages_str = [
-        f"{_['role']}: {_['content']}" for _ in st.session_state["messages"][1:]
+if 'messages' not in st.session_state:
+    st.session_state['messages'] = [
+        {"role": "system", "content": "You are a helpful assistant."}
     ]
-    text.text_area("Messages", value=str("\n".join(messages_str)), height=400)
 
-BASE_PROMPT = [{"role": "system", "content": "You are a helpful assistant."}]
+def generate_response():
+    prompt = st.session_state.user_input
+    agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
+    st.session_state['messages'].append({"role": "user", "content": prompt})
+    response = agent(prompt)['output']
+    st.session_state['messages'].append({"role": "assistant", "content": response})
 
-if "messages" not in st.session_state:
-    st.session_state["messages"] = BASE_PROMPT
-st.header("STREAMLIT GPT-3 CHATBOT")
+st.title("Chat placeholder")
 
-text = st.empty()
-show_messages(text)
+chat_placeholder = st.empty()
 
-prompt = st.text_input("Prompt", value="Enter your message here...")
+if st.session_state['generated']:
+    with chat_placeholder:
+        for i in range(len(st.session_state['generated'])):
+            message(st.session_state["past"][i], is_user=True, key=str(i) + '_user')
+            message(st.session_state["generated"][i], key=str(i))
 
-if st.button("Send"):
-    with st.spinner("Generating response..."):
-        st.session_state["messages"] += [{"role": "user", "content": prompt}]
-        agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
-        output = agent(prompt)['output']
-        st.session_state["messages"] += [
-            {"role": "system", "content": output}
-        ]
-        show_messages(text)
+with st.container():
+    st.text_input("User Input:", on_change=generate_response, key="user_input")            

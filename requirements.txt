@@ -71,3 +71,4 @@ bs4
 pinecone-client
 streamlit
 streamlit-extras
+streamlit-chat 
