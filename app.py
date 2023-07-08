@@ -18,7 +18,7 @@ show_messages(text)
 
 web_url = st.text_input("Prompt", value="Enter the url here...")
 
-agent_created = False
+agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
 
 if st.button("Generate agent"):
     if web_url != "":
