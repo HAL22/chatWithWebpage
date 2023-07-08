@@ -10,6 +10,9 @@ def show_messages(text):
 
 st.header("STREAMLIT GPT-3 CHATBOT")
 
+text = st.empty()
+show_messages(text)
+
 web_url = st.text_input("Prompt", value="Enter the url here...")
 
 agent_created = False
@@ -25,5 +28,9 @@ prompt = st.text_input("Prompt", value="Enter your message here...")
 
 if st.button("Send") and agent_created:
     with st.spinner("Generating response..."):
+        st.session_state["messages"] += [{"role": "user", "content": prompt}]
         output = agent(prompt)['output']
-        show_messages(output)
+        st.session_state["messages"] += [
+            {"role": "system", "content": output}
+        ]
+        show_messages(text)
