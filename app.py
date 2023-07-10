@@ -30,7 +30,7 @@ agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
 
 with container:
     with st.form(key="url_entry"):
-        url_input = st.text_area("You:", key='input', height=100)
+        url_input = st.text_area("You:", key='input_url', height=100)
         submit_url = st.form_submit_button(label='Submit url')
 
     if submit_url:
