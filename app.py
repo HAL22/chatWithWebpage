@@ -25,14 +25,11 @@ response_container = st.container()
 # container for text box
 container = st.container()
 
-url_container = st.container()
-
 agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
 
-with url_container:
-    with st.form(key="url_entry"):
-        url_input = st.text_area("You:", key='input_url', height=100)
-        submit_url = st.form_submit_button(label='Submit url')
+
+   
+        
 
 
 with container:
