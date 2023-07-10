@@ -26,10 +26,17 @@ response_container = st.container()
 container = st.container()
 agent = chat.get_agent("https://en.wikipedia.org/wiki/Chelsea_F.C.")
 
+
+
 with container:
-    with st.form(key='my_form', clear_on_submit=True):
-        user_input = st.text_area("You:", key='input', height=100)
-        submit_button = st.form_submit_button(label='Send')     
+    with st.form(key="url_entry"):
+        url_input = st.text_area("You:", key='input', height=100)
+        submit_url = st.form_submit_button(label='Submit url')
+
+    if submit_url:
+        with st.form(key='my_form', clear_on_submit=True):
+            user_input = st.text_area("You:", key='input', height=100)
+            submit_button = st.form_submit_button(label='Send')   
 
     if submit_button and user_input:
         output = generate_response(user_input,agent)
