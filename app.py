@@ -20,6 +20,7 @@ def generate_response(prompt,agent):
 
 st.title("Chat placeholder")
 
+url_container = st.container()
 # container for chat history
 response_container = st.container()
 # container for text box
